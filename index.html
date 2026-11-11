@@ -27,6 +27,57 @@
     overflow-x: hidden;
   }
 
+  /* ===== Intro: blur inicial y nombre central ===== */
+  .intro {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(11, 11, 16, .55);
+    pointer-events: none;
+    animation: introFade 1.2s ease 2.1s forwards;
+  }
+  .intro h1 {
+    margin: 0;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: .12em;
+    color: var(--white);
+    animation: introName 1.4s ease .2s both, introNameOut 1s ease 2.1s forwards;
+  }
+  @keyframes introName {
+    from { opacity: 0; filter: blur(12px); }
+    to   { opacity: 1; filter: blur(0); }
+  }
+  @keyframes introNameOut {
+    from { opacity: 1; filter: blur(0); }
+    to   { opacity: 0; filter: blur(10px); }
+  }
+  @keyframes introFade {
+    0%   { opacity: 1; visibility: visible; }
+    99%  { opacity: 0; visibility: visible; }
+    100% { opacity: 0; visibility: hidden; }
+  }
+
+  /* Blur del contenido que se quita al terminar la intro */
+  .content, .bg-eyes {
+    animation: unblur 1.6s ease 2.1s forwards;
+  }
+  .content { filter: blur(14px); }
+  .bg-eyes { filter: blur(14px); }
+  @keyframes unblur {
+    from { filter: blur(14px); }
+    to   { filter: blur(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .intro, .intro h1, .content, .bg-eyes { animation: none; }
+    .intro { display: none; }
+    .content, .bg-eyes { filter: none; }
+  }
+
   /* ===== Fondo animado de ojos ===== */
   .bg-eyes {
     position: fixed;
@@ -226,6 +277,11 @@
 </style>
 </head>
 <body>
+
+<!-- Intro: nombre en blanco al centro, que se desvanece al cargar -->
+<div class="intro" aria-hidden="true">
+  <h1>MSVDDS0210</h1>
+</div>
 
 <!-- Fondo: ojos que suben y parpadean -->
 <div class="bg-eyes" id="bgEyes" aria-hidden="true"></div>
