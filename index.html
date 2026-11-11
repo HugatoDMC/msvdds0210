@@ -17,13 +17,58 @@
     --guns: #a855f7;
   }
   * { box-sizing: border-box; }
+  html, body { background: var(--bg); }
   body {
     margin: 0;
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    background: var(--bg);
     color: var(--text);
     min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
   }
+
+  /* ===== Fondo animado de ojos ===== */
+  .bg-eyes {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .eye {
+    position: absolute;
+    bottom: -20vh;
+    animation-name: rise;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    opacity: 0;
+  }
+  .eye svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    animation-name: blink;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    transform-origin: center;
+  }
+  @keyframes rise {
+    0%   { transform: translateY(0);      opacity: 0; }
+    10%  { opacity: .22; }
+    85%  { opacity: .22; }
+    100% { transform: translateY(-125vh); opacity: 0; }
+  }
+  @keyframes blink {
+    0%, 92%, 100% { transform: scaleY(1); }
+    95%           { transform: scaleY(.08); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .eye, .eye svg { animation: none; }
+    .eye { display: none; }
+  }
+
+  /* ===== Contenido por encima del fondo ===== */
+  .content { position: relative; z-index: 1; }
 
   .banner {
     width: 100%;
@@ -104,12 +149,20 @@
     margin: 0 0 14px;
   }
 
+  /* Barra de desplazamiento de álbumes en negro */
   .albums {
     display: flex;
     gap: 16px;
     overflow-x: auto;
     padding: 4px 2px 14px;
+    scrollbar-width: thin;
+    scrollbar-color: #000 #000;
   }
+  .albums::-webkit-scrollbar { height: 10px; }
+  .albums::-webkit-scrollbar-track { background: #000; }
+  .albums::-webkit-scrollbar-thumb { background: #000; border-radius: 6px; }
+  .albums::-webkit-scrollbar-thumb:hover { background: #111; }
+
   .album {
     flex: 0 0 160px;
     text-decoration: none;
@@ -157,79 +210,121 @@
 </head>
 <body>
 
-<img class="banner" src="assets/profile/banner.png" alt="Banner de MSVDDS0210">
+<!-- Fondo: ojos que suben y parpadean -->
+<div class="bg-eyes" id="bgEyes" aria-hidden="true"></div>
 
-<div class="layout">
+<div class="content">
 
-  <aside class="sidebar">
-    <img class="pfp" src="assets/profile/pfp.png" alt="MSVDDS0210">
-    <h1 class="name">MSVDDS0210</h1>
+  <img class="banner" src="assets/profile/banner.png" alt="Banner de MSVDDS0210">
 
-    <div class="bio-box">
-      <p>Yea...</p>
+  <div class="layout">
 
-      <a class="btn btn-spotify" href="https://open.spotify.com/artist/0okmlAaeb1l5d1gqOeTsSJ" target="_blank" rel="noopener">
-        <img src="https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/spotify.svg" alt="">
-        Spotify
-      </a>
+    <aside class="sidebar">
+      <img class="pfp" src="assets/profile/pfp.png" alt="MSVDDS0210">
+      <h1 class="name">MSVDDS0210</h1>
 
-      <a class="btn btn-yt" href="https://www.youtube.com/channel/UCCwK9XKbU0bPLVUey64PcEA" target="_blank" rel="noopener">
-        <img src="https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/youtube.svg" alt="">
-        YouTube
-      </a>
+      <div class="bio-box">
+        <p>Yea...</p>
 
-      <a class="btn btn-guns" href="https://guns.lol/TU_USUARIO" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-        </svg>
-        Guns.lol
-      </a>
-    </div>
-  </aside>
+        <a class="btn btn-spotify" href="https://open.spotify.com/artist/0okmlAaeb1l5d1gqOeTsSJ" target="_blank" rel="noopener">
+          <img src="https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/spotify.svg" alt="">
+          Spotify
+        </a>
 
-  <main class="main">
-    <p class="section-title">Álbumes</p>
-    <div class="albums">
-      <a class="album" href="https://open.spotify.com/album/5hkTPTOnpuj6gsDssA11iB" target="_blank" rel="noopener">
-        <img src="assets/albums/Unexpected_optimism_PORT.png" alt="Unexpected Optimism">
-        <span>Unexpected Optimism</span>
-      </a>
-      <a class="album" href="https://open.spotify.com/album/2fWjp4PamyxCGsBqWQs8dc" target="_blank" rel="noopener">
-        <img src="assets/albums/Weird_Feeling_PORT.png" alt="Weird Feeling">
-        <span>Weird Feeling</span>
-      </a>
-      <a class="album" href="https://open.spotify.com/album/6RNZGWoHdhyRA0vw8mNbbv" target="_blank" rel="noopener">
-        <img src="assets/albums/Warm_Day_PORT.png" alt="Warm Day">
-        <span>Warm Day</span>
-      </a>
-      <a class="album" href="https://open.spotify.com/album/1IcxMRPBx1lngkgSdPGpZj" target="_blank" rel="noopener">
-        <img src="assets/albums/Eye_Fish_Portt.png" alt="Eye Fish">
-        <span>Eye Fish</span>
-      </a>
-      <a class="album" href="https://open.spotify.com/album/48QchUrSc4xf4tR8i04rDD" target="_blank" rel="noopener">
-        <img src="assets/albums/backseater_ost_port.png" alt="Backseater OST">
-        <span>Backseater OST</span>
-      </a>
-      <a class="album" href="https://open.spotify.com/album/6zEnCvqmo8ogNnYsbmdvJT" target="_blank" rel="noopener">
-        <img src="assets/albums/twostips.png" alt="Two Sips">
-        <span>Two Sips</span>
-      </a>
-      <a class="album" href="https://open.spotify.com/album/3n45S4E8H61hZePTP3ThQj" target="_blank" rel="noopener">
-        <img src="assets/albums/Due_Trust_PORT.png" alt="Due Trust">
-        <span>Due Trust</span>
-      </a>
-    </div>
+        <a class="btn btn-yt" href="https://www.youtube.com/channel/UCCwK9XKbU0bPLVUey64PcEA" target="_blank" rel="noopener">
+          <img src="https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/youtube.svg" alt="">
+          YouTube
+        </a>
 
-    <div class="video-wrap">
-      <iframe src="https://www.youtube.com/embed/QmiBnhzJtH4"
-        title="Video destacado de MSVDDS0210"
-        loading="lazy" allowfullscreen
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-    </div>
-  </main>
+        <a class="btn btn-guns" href="https://guns.lol/miyomusic" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          </svg>
+          Guns.lol
+        </a>
+      </div>
+    </aside>
 
+    <main class="main">
+      <p class="section-title">Álbumes</p>
+      <div class="albums">
+        <a class="album" href="https://open.spotify.com/album/5hkTPTOnpuj6gsDssA11iB" target="_blank" rel="noopener">
+          <img src="assets/albums/Unexpected_optimism_PORT.png" alt="Unexpected Optimism">
+          <span>Unexpected Optimism</span>
+        </a>
+        <a class="album" href="https://open.spotify.com/album/2fWjp4PamyxCGsBqWQs8dc" target="_blank" rel="noopener">
+          <img src="assets/albums/Weird_Feeling_PORT.png" alt="Weird Feeling">
+          <span>Weird Feeling</span>
+        </a>
+        <a class="album" href="https://open.spotify.com/album/6RNZGWoHdhyRA0vw8mNbbv" target="_blank" rel="noopener">
+          <img src="assets/albums/Warm_Day_PORT.png" alt="Warm Day">
+          <span>Warm Day</span>
+        </a>
+        <a class="album" href="https://open.spotify.com/album/1IcxMRPBx1lngkgSdPGpZj" target="_blank" rel="noopener">
+          <img src="assets/albums/Eye_Fish_Portt.png" alt="Eye Fish">
+          <span>Eye Fish</span>
+        </a>
+        <a class="album" href="https://open.spotify.com/album/48QchUrSc4xf4tR8i04rDD" target="_blank" rel="noopener">
+          <img src="assets/albums/backseater_ost_port.png" alt="Backseater OST">
+          <span>Backseater OST</span>
+        </a>
+        <a class="album" href="https://open.spotify.com/album/6zEnCvqmo8ogNnYsbmdvJT" target="_blank" rel="noopener">
+          <img src="assets/albums/twostips.png" alt="Two Sips">
+          <span>Two Sips</span>
+        </a>
+        <a class="album" href="https://open.spotify.com/album/3n45S4E8H61hZePTP3ThQj" target="_blank" rel="noopener">
+          <img src="assets/albums/Due_Trust_PORT.png" alt="Due Trust">
+          <span>Due Trust</span>
+        </a>
+      </div>
+
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/QmiBnhzJtH4"
+          title="Video destacado de MSVDDS0210"
+          loading="lazy" allowfullscreen
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+      </div>
+    </main>
+
+  </div>
 </div>
+
+<script>
+  // Genera los ojos del fondo con tamaños, posiciones y velocidades distintas
+  const EYE_SVG = `
+    <svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 30 Q50 -14 97 30 Q50 74 3 30 Z" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+      <circle cx="50" cy="30" r="15" fill="#fff"/>
+    </svg>`;
+
+  const container = document.getElementById("bgEyes");
+  const COUNT = 18;
+
+  for (let i = 0; i < COUNT; i++) {
+    const eye = document.createElement("div");
+    eye.className = "eye";
+    eye.innerHTML = EYE_SVG;
+
+    const width = 60 + Math.random() * 90;             // 60px a 150px
+    const left = Math.random() * 100;                   // posición horizontal %
+    const riseSeconds = 16 + Math.random() * 18;        // velocidad de subida
+    const riseDelay = -Math.random() * riseSeconds;     // para que ya haya ojos en pantalla al entrar
+    const blinkSeconds = 3 + Math.random() * 4;
+    const blinkDelay = -Math.random() * blinkSeconds;
+
+    eye.style.width = width + "px";
+    eye.style.left = left + "%";
+    eye.style.animationDuration = riseSeconds + "s";
+    eye.style.animationDelay = riseDelay + "s";
+
+    const svg = eye.querySelector("svg");
+    svg.style.animationDuration = blinkSeconds + "s";
+    svg.style.animationDelay = blinkDelay + "s";
+
+    container.appendChild(eye);
+  }
+</script>
 
 </body>
 </html>
