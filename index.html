@@ -100,12 +100,29 @@
     margin-top: -88px;
     position: relative;
   }
+
+  /* Nombre con efecto cromático animado */
   .name {
     margin: 16px 0 6px;
     font-size: 1.5rem;
     font-weight: 800;
     letter-spacing: .08em;
+    background: linear-gradient(90deg, #6b6b75 0%, #ffffff 25%, #6b6b75 50%, #ffffff 75%, #6b6b75 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: chroma 4s linear infinite;
   }
+  @keyframes chroma {
+    0%   { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .name { animation: none; }
+  }
+
   .bio-box {
     margin-top: 14px;
     background: var(--panel);
@@ -306,10 +323,10 @@
     eye.className = "eye";
     eye.innerHTML = EYE_SVG;
 
-    const width = 60 + Math.random() * 90;             // 60px a 150px
-    const left = Math.random() * 100;                   // posición horizontal %
-    const riseSeconds = 16 + Math.random() * 18;        // velocidad de subida
-    const riseDelay = -Math.random() * riseSeconds;     // para que ya haya ojos en pantalla al entrar
+    const width = 60 + Math.random() * 90;
+    const left = Math.random() * 100;
+    const riseSeconds = 16 + Math.random() * 18;
+    const riseDelay = -Math.random() * riseSeconds;
     const blinkSeconds = 3 + Math.random() * 4;
     const blinkDelay = -Math.random() * blinkSeconds;
 
