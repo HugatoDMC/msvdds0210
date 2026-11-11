@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Msvdds0210</title>
+<style>
+  body { margin: 0; font-family: system-ui, sans-serif; background: #0f0f14; color: #eee;
+         display: flex; justify-content: center; padding: 40px 16px; }
+  .card { width: 100%; max-width: 480px; text-align: center; }
+  .avatar { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px solid #7c5cff; }
+  h1 { margin: 12px 0 4px; }
+  .bio { color: #aaa; font-size: .95rem; }
+  .links a { display: inline-block; margin: 6px; padding: 8px 14px; border-radius: 999px;
+             background: #1d1d27; color: #fff; text-decoration: none; }
+  h2 { text-align: left; font-size: 1.1rem; margin-top: 32px; }
+  iframe { border-radius: 12px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: left; }
+  .grid a { color: #eee; text-decoration: none; font-size: .85rem; }
+  .grid img { width: 100%; border-radius: 8px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <img class="avatar" src="avatar.jpg" alt="Msvdds0210">
+  <h1>Msvdds0210</h1>
+  <p class="bio">Artista de música. Escucha lo último aquí.</p>
+
+  <div class="links">
+    <a href="https://open.spotify.com/artist/TU_ID_SPOTIFY" target="_blank">Spotify</a>
+    <a href="https://www.youtube.com/@TU_CANAL" target="_blank">YouTube</a>
+  </div>
+
+  <h2>Escucha</h2>
+  <iframe src="https://open.spotify.com/embed/artist/TU_ID_SPOTIFY"
+          width="100%" height="352" frameborder="0"
+          allow="encrypted-media" loading="lazy"></iframe>
+
+  <h2>Últimos videos</h2>
+  <div id="videos" class="grid">Cargando...</div>
+</div>
+
+<script>
+  const API_KEY = "TU_API_KEY";
+  const CHANNEL_ID = "UCxxxxxxxxxxxxxxxxxxxxxx"; // ID de tu canal
+  const UPLOADS_ID = "UU" + CHANNEL_ID.slice(2);  // lista de subidas del canal
+
+  async function cargarVideos() {
+    const url = `https://www.googleapis.com/youtube/v3/playlistItems` +
+                `?part=snippet&maxResults=6&playlistId=${UPLOADS_ID}&key=${API_KEY}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Error de API");
+    const data = await res.json();
+
+    const cont = document.getElementById("videos");
+    cont.innerHTML = "";
+    for (const item of data.items) {
+      const s = item.snippet;
+      const a = document.createElement("a");
+      a.href = `https://www.youtube.com/watch?v=${s.resourceId.videoId}`;
+      a.target = "_blank";
+      a.innerHTML = `<img src="${s.thumbnails.medium.url}" alt="">`;
+      a.append(s.title); // textContent-safe: evita inyectar HTML desde el título
+      cont.appendChild(a);
+    }
+  }
+
+  cargarVideos().catch(() => {
+    document.getElementById("videos").textContent = "No se pudieron cargar los videos.";
+  });
+</script>
+</body>
+</html>
