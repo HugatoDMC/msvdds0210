@@ -3,90 +3,189 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Msvdds0210</title>
+<title>MSVDDS0210</title>
 <style>
-  body { margin: 0; font-family: system-ui, sans-serif; background: #0f0f14; color: #eee;
-         display: flex; justify-content: center; padding: 40px 16px; }
-  .card { width: 100%; max-width: 480px; text-align: center; }
-  .avatar { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px solid #7c5cff; }
-  h1 { margin: 12px 0 4px; }
-  .bio { color: #aaa; font-size: .95rem; }
-  .links a { display: inline-block; margin: 6px; padding: 8px 14px; border-radius: 999px;
-             background: #1d1d27; color: #fff; text-decoration: none; }
-  h2 { text-align: left; font-size: 1.1rem; margin-top: 32px; }
-  iframe { border-radius: 12px; }
-  .destacado iframe { width: 100%; height: 315px; border: 0; border-radius: 12px; }
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: left; }
-  .grid a { color: #eee; text-decoration: none; font-size: .85rem; }
-  .grid img { width: 100%; border-radius: 8px; display: block; margin-bottom: 4px; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: #000;
+    color: #fff;
+  }
+
+  .banner {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    display: block;
+    border-bottom: 2px solid #ff3b3b;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px 40px;
+  }
+
+  /* Columna izquierda */
+  .sidebar { text-align: center; }
+  .pfp {
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ff3b3b;
+    background: #111;
+    margin-top: -85px;   /* la foto se sale sobre el banner */
+    position: relative;
+  }
+  .name { margin: 10px 0 16px; font-weight: 600; letter-spacing: 1px; }
+
+  .bio-box {
+    background: #3a3a3a;
+    border-radius: 28px;
+    padding: 20px 16px;
+    text-align: left;
+  }
+  .bio-box p { margin: 0 0 14px; color: #fff; }
+  .btn {
+    display: block;
+    text-align: center;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 2px solid;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .btn-spotify { border-color: #1db954; color: #1db954; }
+  .btn-yt { border-color: #ff3b3b; color: #ff3b3b; }
+  .btn-guns { border-color: #a855f7; color: #a855f7; }
+
+  /* Columna principal */
+  .main { min-width: 0; padding-top: 20px; }
+
+  .albums {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: thin;
+  }
+  .album {
+    flex: 0 0 150px;
+    text-decoration: none;
+    color: #fff;
+    font-size: .85rem;
+  }
+  .album img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 2px solid #ff3b3b;
+    border-radius: 6px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .video {
+    margin-top: 28px;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 2px solid #ff3b3b;
+    border-radius: 10px;
+    background: #111;
+  }
+  .video iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .video-placeholder {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+  }
+
+  @media (max-width: 800px) {
+    .layout { grid-template-columns: 1fr; }
+    .pfp { margin: -85px auto 0; display: block; }
+    .sidebar { max-width: 320px; margin: 0 auto; }
+    .main { padding-top: 0; }
+  }
 </style>
 </head>
 <body>
-<div class="card">
-  <img class="avatar" src="assets/images/avatar.jpg" alt="Msvdds0210">
-  <h1>Msvdds0210</h1>
-  <p class="bio">Artista de música. Escucha lo último aquí.</p>
 
-  <div class="links">
-    <a href="https://open.spotify.com/artist/0okmlAaeb1l5d1gqOeTsSJ" target="_blank">Spotify</a>
-    <a href="https://www.youtube.com/channel/UCCwK9XKbU0bPLVUey64PcEA" target="_blank">YouTube</a>
-  </div>
+<img class="banner" src="assets/profile/banner.jpg" alt="Banner de MSVDDS0210">
 
-  <h2>Escucha</h2>
-  <iframe data-testid="embed-iframe" style="border-radius:12px"
-    src="https://open.spotify.com/embed/artist/0okmlAaeb1l5d1gqOeTsSJ?utm_source=generator"
-    width="100%" height="352" frameBorder="0" allowfullscreen=""
-    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-    loading="lazy"></iframe>
+<div class="layout">
 
-  <div id="destacado-wrap" class="destacado" hidden>
-    <h2>Destacado</h2>
-    <iframe id="destacado" loading="lazy" allowfullscreen
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-  </div>
+  <aside class="sidebar">
+    <img class="pfp" src="assets/profile/pfp.jpg" alt="MSVDDS0210">
+    <h1 class="name">MSVDDS0210</h1>
 
-  <h2>Últimos videos</h2>
-  <div id="videos" class="grid">Cargando...</div>
+    <div class="bio-box">
+      <p>Yea...</p>
+      <a class="btn btn-spotify" href="https://open.spotify.com/artist/0okmlAaeb1l5d1gqOeTsSJ" target="_blank" rel="noopener">Spotify</a>
+      <a class="btn btn-yt" href="https://www.youtube.com/channel/UCCwK9XKbU0bPLVUey64PcEA" target="_blank" rel="noopener">YouTube</a>
+      <a class="btn btn-guns" href="https://guns.lol/TU_USUARIO" target="_blank" rel="noopener">Guns.lol</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div id="albums" class="albums"></div>
+
+    <div class="video" id="video"></div>
+  </main>
+
 </div>
 
 <script>
-  // Pon aquí el ID de un video para destacarlo arriba (la parte después de "v=" en la URL).
-  // Déjalo vacío ("") si no quieres destacado.
-  const FEATURED_VIDEO_ID = "";
+  // ===== Edita aquí =====
 
-  if (FEATURED_VIDEO_ID) {
-    const wrap = document.getElementById("destacado-wrap");
-    document.getElementById("destacado").src = `https://www.youtube.com/embed/${FEATURED_VIDEO_ID}`;
-    wrap.hidden = false;
+  // Álbumes: portada en assets/albums/ y enlace (Spotify, YouTube o donde quieras)
+  const ALBUMS = [
+    { title: "Nombre del álbum 1", cover: "assets/albums/album1.jpg", url: "https://open.spotify.com/artist/0okmlAaeb1l5d1gqOeTsSJ" },
+    { title: "Nombre del álbum 2", cover: "assets/albums/album2.jpg", url: "https://open.spotify.com/artist/0okmlAaeb1l5d1gqOeTsSJ" },
+    { title: "Nombre del álbum 3", cover: "assets/albums/album3.jpg", url: "https://open.spotify.com/artist/0okmlAaeb1l5d1gqOeTsSJ" }
+  ];
+
+  // Video grande: pon el ID del video de YouTube (lo que va después de "v=")
+  const VIDEO_ID = "TU_VIDEO_ID";
+
+  // ======================
+
+  const albumsEl = document.getElementById("albums");
+  for (const album of ALBUMS) {
+    const a = document.createElement("a");
+    a.className = "album";
+    a.href = album.url;
+    a.target = "_blank";
+    a.rel = "noopener";
+
+    const img = document.createElement("img");
+    img.src = album.cover;
+    img.alt = album.title;
+
+    a.appendChild(img);
+    a.append(album.title);
+    albumsEl.appendChild(a);
   }
 
-  async function cargarVideos() {
-    const res = await fetch("assets/feed.xml");
-    if (!res.ok) throw new Error("No se encontró el feed");
-    const xml = new DOMParser().parseFromString(await res.text(), "application/xml");
-    const YT = "http://www.youtube.com/xml/schemas/2015";
-    const entries = [...xml.getElementsByTagName("entry")];
-
-    const cont = document.getElementById("videos");
-    cont.innerHTML = "";
-    for (const entry of entries) {
-      const id = entry.getElementsByTagNameNS(YT, "videoId")[0].textContent;
-      const title = entry.getElementsByTagName("title")[0].textContent;
-      const a = document.createElement("a");
-      a.href = `https://www.youtube.com/watch?v=${id}`;
-      a.target = "_blank";
-      const img = document.createElement("img");
-      img.src = `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
-      img.alt = "";
-      a.appendChild(img);
-      a.append(title);
-      cont.appendChild(a);
-    }
+  const videoEl = document.getElementById("video");
+  if (VIDEO_ID && VIDEO_ID !== "TU_VIDEO_ID") {
+    const iframe = document.createElement("iframe");
+    iframe.src = `https://www.youtube.com/embed/${VIDEO_ID}`;
+    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+    iframe.allowFullscreen = true;
+    videoEl.appendChild(iframe);
+  } else {
+    videoEl.innerHTML = '<div class="video-placeholder">Pon el ID de un video en VIDEO_ID</div>';
   }
-
-  cargarVideos().catch(() => {
-    document.getElementById("videos").textContent = "No se pudieron cargar los videos.";
-  });
 </script>
+
 </body>
 </html>
