@@ -9,7 +9,7 @@ window.SITE = {
   gunsUrl: "https://guns.lol/TU_USUARIO",
 
   // ID del video destacado (lo que va después de "v=" en la URL). Vacío = sin destacado.
-  featuredVideoId: "",
+  featuredVideoId: "QmiBnhzJtH4",
 
   albums: [
     { title: "Unexpected Optimism", cover: "assets/albums/Unexpected_optimism_PORT.png", url: "https://open.spotify.com/album/5hkTPTOnpuj6gsDssA11iB" },
