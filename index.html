@@ -217,19 +217,43 @@
     margin: 0 0 14px;
   }
 
-  /* Barra de desplazamiento de álbumes en negro */
+  /* Carrusel de álbumes con flechas laterales (sin barra de desplazamiento) */
+  .carousel {
+    position: relative;
+  }
   .albums {
     display: flex;
     gap: 16px;
     overflow-x: auto;
+    scroll-behavior: smooth;
     padding: 4px 2px 14px;
-    scrollbar-width: thin;
-    scrollbar-color: #000 #000;
+    scrollbar-width: none;        /* Firefox: oculta la barra */
+    -ms-overflow-style: none;     /* Edge antiguo */
   }
-  .albums::-webkit-scrollbar { height: 10px; }
-  .albums::-webkit-scrollbar-track { background: #000; }
-  .albums::-webkit-scrollbar-thumb { background: #000; border-radius: 6px; }
-  .albums::-webkit-scrollbar-thumb:hover { background: #111; }
+  .albums::-webkit-scrollbar { display: none; }  /* Chrome, Safari */
+
+  .arrow {
+    position: absolute;
+    top: 80px;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: rgba(11, 11, 16, .85);
+    color: var(--white);
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .arrow:hover { background: #000; border-color: var(--white); }
+  .arrow-prev { left: -16px; }
+  .arrow-next { right: -16px; }
 
   .album {
     flex: 0 0 160px;
@@ -273,6 +297,8 @@
     .sidebar { max-width: 360px; width: 100%; margin: 0 auto; }
     .pfp { margin: -88px auto 0; display: block; }
     .main { padding-top: 0; }
+    .arrow-prev { left: 4px; }
+    .arrow-next { right: 4px; }
   }
 </style>
 </head>
@@ -288,13 +314,13 @@
 
 <div class="content">
 
-  <img class="banner" src="assets/profile/banner.png" alt="Banner de MSVDDS0210">
+  <img class="banner" src="assets/profile/banner.png" alt="Banner de Miyo Music">
 
   <div class="layout">
 
     <aside class="sidebar">
-      <img class="pfp" src="assets/profile/pfp.png" alt="MSVDDS0210">
-      <h1 class="name">MSVDDS0210</h1>
+      <img class="pfp" src="assets/profile/pfp.png" alt="Miyo Music">
+      <h1 class="name">Miyo Music ♪</h1>
 
       <div class="bio-box">
         <p>Yea...</p>
@@ -320,41 +346,48 @@
     </aside>
 
     <main class="main">
-      <p class="section-title">Álbumes</p>
-      <div class="albums">
-        <a class="album" href="https://open.spotify.com/album/5hkTPTOnpuj6gsDssA11iB" target="_blank" rel="noopener">
-          <img src="assets/albums/Unexpected_optimism_PORT.png" alt="Unexpected Optimism">
-          <span>Unexpected Optimism</span>
-        </a>
-        <a class="album" href="https://open.spotify.com/album/2fWjp4PamyxCGsBqWQs8dc" target="_blank" rel="noopener">
-          <img src="assets/albums/Weird_Feeling_PORT.png" alt="Weird Feeling">
-          <span>Weird Feeling</span>
-        </a>
-        <a class="album" href="https://open.spotify.com/album/6RNZGWoHdhyRA0vw8mNbbv" target="_blank" rel="noopener">
-          <img src="assets/albums/Warm_Day_PORT.png" alt="Warm Day">
-          <span>Warm Day</span>
-        </a>
-        <a class="album" href="https://open.spotify.com/album/1IcxMRPBx1lngkgSdPGpZj" target="_blank" rel="noopener">
-          <img src="assets/albums/Eye_Fish_Portt.png" alt="Eye Fish">
-          <span>Eye Fish</span>
-        </a>
-        <a class="album" href="https://open.spotify.com/album/48QchUrSc4xf4tR8i04rDD" target="_blank" rel="noopener">
-          <img src="assets/albums/backseater_ost_port.png" alt="Backseater OST">
-          <span>Backseater OST</span>
-        </a>
-        <a class="album" href="https://open.spotify.com/album/6zEnCvqmo8ogNnYsbmdvJT" target="_blank" rel="noopener">
-          <img src="assets/albums/twostips.png" alt="Two Sips">
-          <span>Two Sips</span>
-        </a>
-        <a class="album" href="https://open.spotify.com/album/3n45S4E8H61hZePTP3ThQj" target="_blank" rel="noopener">
-          <img src="assets/albums/Due_Trust_PORT.png" alt="Due Trust">
-          <span>Due Trust</span>
-        </a>
+      <p class="section-title">Albums y sencillos</p>
+
+      <div class="carousel">
+        <button class="arrow arrow-prev" id="prev" aria-label="Anterior">&lsaquo;</button>
+
+        <div class="albums" id="albums">
+          <a class="album" href="https://open.spotify.com/album/5hkTPTOnpuj6gsDssA11iB" target="_blank" rel="noopener">
+            <img src="assets/albums/Unexpected_optimism_PORT.png" alt="Unexpected Optimism">
+            <span>Unexpected Optimism</span>
+          </a>
+          <a class="album" href="https://open.spotify.com/album/2fWjp4PamyxCGsBqWQs8dc" target="_blank" rel="noopener">
+            <img src="assets/albums/Weird_Feeling_PORT.png" alt="Weird Feeling">
+            <span>Weird Feeling</span>
+          </a>
+          <a class="album" href="https://open.spotify.com/album/6RNZGWoHdhyRA0vw8mNbbv" target="_blank" rel="noopener">
+            <img src="assets/albums/Warm_Day_PORT.png" alt="Warm Day">
+            <span>Warm Day</span>
+          </a>
+          <a class="album" href="https://open.spotify.com/album/1IcxMRPBx1lngkgSdPGpZj" target="_blank" rel="noopener">
+            <img src="assets/albums/Eye_Fish_Portt.png" alt="Eye Fish">
+            <span>Eye Fish</span>
+          </a>
+          <a class="album" href="https://open.spotify.com/album/48QchUrSc4xf4tR8i04rDD" target="_blank" rel="noopener">
+            <img src="assets/albums/backseater_ost_port.png" alt="Backseater OST">
+            <span>Backseater OST</span>
+          </a>
+          <a class="album" href="https://open.spotify.com/album/6zEnCvqmo8ogNnYsbmdvJT" target="_blank" rel="noopener">
+            <img src="assets/albums/twostips.png" alt="Two Sips">
+            <span>Two Sips</span>
+          </a>
+          <a class="album" href="https://open.spotify.com/album/3n45S4E8H61hZePTP3ThQj" target="_blank" rel="noopener">
+            <img src="assets/albums/Due_Trust_PORT.png" alt="Due Trust">
+            <span>Due Trust</span>
+          </a>
+        </div>
+
+        <button class="arrow arrow-next" id="next" aria-label="Siguiente">&rsaquo;</button>
       </div>
 
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/QmiBnhzJtH4"
-          title="Video destacado de MSVDDS0210"
+          title="Video destacado de Miyo Music"
           loading="lazy" allowfullscreen
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -397,6 +430,17 @@
 
     container.appendChild(eye);
   }
+
+  // Flechas del carrusel de álbumes
+  const albumsEl = document.getElementById("albums");
+  const STEP = 340; // ancho de un álbum + espacio, aprox.
+
+  document.getElementById("prev").addEventListener("click", () => {
+    albumsEl.scrollBy({ left: -STEP, behavior: "smooth" });
+  });
+  document.getElementById("next").addEventListener("click", () => {
+    albumsEl.scrollBy({ left: STEP, behavior: "smooth" });
+  });
 </script>
 
 </body>
