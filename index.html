@@ -14,6 +14,7 @@
     --white: #ffffff;
     --spotify: #1db954;
     --youtube: #ff0033;
+    --discord: #5865F2;
     --guns: #a855f7;
   }
   * { box-sizing: border-box; }
@@ -197,7 +198,7 @@
     text-decoration: none;
     font-weight: 600;
     font-size: .95rem;
-    transition: transform .15s ease, background .15s ease, border-color .15s ease;
+    transition: transform .15s ease, background .15s ease, border-color .15s ease, color .15s ease;
   }
   .btn:hover { transform: translateY(-2px); background: rgba(255,255,255,.07); }
   .btn img, .btn svg { width: 20px; height: 20px; flex-shrink: 0; }
@@ -206,6 +207,21 @@
   .btn-yt:hover { border-color: var(--youtube); }
   .btn-guns svg { color: var(--guns); }
   .btn-guns:hover { border-color: var(--guns); }
+
+  /* Discord: icono como máscara para que cambie a azul al pasar el cursor */
+  .icon-discord {
+    display: block;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    background-color: currentColor;
+    -webkit-mask: url("https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/discord.svg") center / contain no-repeat;
+            mask: url("https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/discord.svg") center / contain no-repeat;
+  }
+  .btn-discord:hover {
+    border-color: var(--discord);
+    color: var(--discord);
+  }
 
   .main { min-width: 0; padding-top: 24px; }
   .section-title {
@@ -414,6 +430,11 @@
           YouTube
         </a>
 
+        <a class="btn btn-discord" href="https://discord.gg/0210" target="_blank" rel="noopener">
+          <span class="icon-discord" aria-hidden="true"></span>
+          Discord
+        </a>
+
         <a class="btn btn-guns" href="https://guns.lol/miyomusic" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
@@ -538,18 +559,18 @@
   });
 
   // ===== Playlist =====
-  // Nombres exactos de los archivos en assets/music/ tal como aparecen en GitHub
+  // Archivos en assets/music/ con nombres simples (sin espacios ni paréntesis)
   const PLAYLIST = [
-    { title: "Backseater.exe",       src: "assets/music/Msvdds0210 - Backseater.exe (SPOTISAVER).mp3" },
-    { title: "Opening the Void",     src: "assets/music/Msvdds0210 - Opening the Void (SPOTISAVER).mp3" },
-    { title: "Where Galaxies Ends",  src: "assets/music/Msvdds0210 - Where Galaxies Ends (SPOTISAVER).mp3" },
-    { title: "Bedroom",              src: "assets/music/Msvdds0210 - Bedroom (SPOTISAVER).mp3" },
-    { title: "Here Again",           src: "assets/music/Msvdds0210 - Here Again (SPOTISAVER).mp3" },
-    { title: "Moody Thoughts",       src: "assets/music/Msvdds0210 - Moody Thoughts (SPOTISAVER).mp3" },
-    { title: "Retired",              src: "assets/music/Msvdds0210 - Retired (SPOTISAVER).mp3" },
-    { title: "Somewhere Beyond",     src: "assets/music/Msvdds0210 - Somewhere Beyond (SPOTISAVER).mp3" },
-    { title: "Unfair Reminder",      src: "assets/music/Msvdds0210 - Unfair Reminder (SPOTISAVER).mp3" },
-    { title: "We Made It Somehow",   src: "assets/music/Msvdds0210 - We Made It Somehow (SPOTISAVER).mp3" },
+    { title: "Backseater.exe",       src: "assets/music/backseater.mp3" },
+    { title: "Opening the Void",     src: "assets/music/opening-the-void.mp3" },
+    { title: "Where Galaxies Ends",  src: "assets/music/where-galaxies-ends.mp3" },
+    { title: "Bedroom",              src: "assets/music/bedroom.mp3" },
+    { title: "Here Again",           src: "assets/music/here-again.mp3" },
+    { title: "Moody Thoughts",       src: "assets/music/moody-thoughts.mp3" },
+    { title: "Retired",              src: "assets/music/retired.mp3" },
+    { title: "Somewhere Beyond",     src: "assets/music/somewhere-beyond.mp3" },
+    { title: "Unfair Reminder",      src: "assets/music/unfair-reminder.mp3" },
+    { title: "We Made It Somehow",   src: "assets/music/we-made-it-somehow.mp3" },
   ];
 
   const audio = new Audio();
