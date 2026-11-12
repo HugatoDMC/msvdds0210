@@ -569,6 +569,14 @@
     playBtn.setAttribute("aria-label", isPlaying ? "Pausar" : "Reproducir");
   }
 
+  // Códigos de error de HTML5 Audio
+  const ERROR_TEXT = {
+    1: "Reproducción cancelada",
+    2: "Error de red al cargar",
+    3: "Archivo dañado o no decodificable",
+    4: "Archivo no encontrado o formato no soportado"
+  };
+
   function loadTrack(i) {
     index = (i + PLAYLIST.length) % PLAYLIST.length;
     audio.src = PLAYLIST[index].src;
@@ -584,8 +592,10 @@
         setPlayingUI(false);
         if (err && err.name === "NotAllowedError") {
           labelEl.textContent = "Toca ▶ para escuchar";
+        } else if (err && err.name === "AbortError") {
+          // Se cambió de canción antes de que cargara; no es un error real
         } else {
-          labelEl.textContent = "No se pudo reproducir";
+          labelEl.textContent = "Error: " + (err ? err.name : "desconocido");
           console.error("Error de audio:", audio.src, err);
         }
       });
@@ -616,10 +626,12 @@
   // Al terminar una canción, la siguiente empieza sola (la lista vuelve al inicio al final)
   audio.addEventListener("ended", () => changeTrack(index + 1, true));
 
-  // Si el archivo no existe o no se puede leer, lo mostramos en vez de quedarnos en silencio
+  // Muestra qué error dio el navegador y en qué archivo
   audio.addEventListener("error", () => {
-    console.error("No se encontró el archivo:", audio.src);
-    labelEl.textContent = "Archivo no encontrado";
+    const code = audio.error ? audio.error.code : 0;
+    const msg = ERROR_TEXT[code] || "Error desconocido";
+    labelEl.textContent = "Error " + code + ": " + msg;
+    console.error("Error de audio en:", audio.src, "código:", code, msg);
     setPlayingUI(false);
   });
 
