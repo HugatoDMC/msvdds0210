@@ -480,7 +480,7 @@
   <img class="disc" id="disc" src="assets/images/disco.png" alt="">
 
   <div class="track-info">
-    <div class="track-label">Estás escuchando</div>
+    <div class="track-label" id="trackLabel">Estás escuchando</div>
     <div class="track-title" id="trackTitle">Cargando...</div>
   </div>
 
@@ -558,6 +558,7 @@
 
   const disc = document.getElementById("disc");
   const titleEl = document.getElementById("trackTitle");
+  const labelEl = document.getElementById("trackLabel");
   const playBtn = document.getElementById("playBtn");
   let index = 0;
 
@@ -572,24 +573,28 @@
     index = (i + PLAYLIST.length) % PLAYLIST.length;
     audio.src = PLAYLIST[index].src;
     titleEl.textContent = PLAYLIST[index].title;
+    labelEl.textContent = "Estás escuchando";
   }
 
+  // Intenta reproducir. Si el navegador bloquea el audio, avisa al visitante
   function play() {
     return audio.play()
       .then(() => setPlayingUI(true))
-      .catch(() => setPlayingUI(false));
+      .catch(err => {
+        setPlayingUI(false);
+        if (err && err.name === "NotAllowedError") {
+          labelEl.textContent = "Toca ▶ para escuchar";
+        } else {
+          labelEl.textContent = "No se pudo reproducir";
+          console.error("Error de audio:", audio.src, err);
+        }
+      });
   }
 
-  function nextTrack() {
-    const wasPlaying = !audio.paused;
-    loadTrack(index + 1);
-    if (wasPlaying) play();
-  }
-
-  function prevTrack() {
-    const wasPlaying = !audio.paused;
-    loadTrack(index - 1);
-    if (wasPlaying) play();
+  // Cambia de canción. Si autoplay es true, la nueva canción empieza sola
+  function changeTrack(newIndex, autoplay) {
+    loadTrack(newIndex);
+    if (autoplay) play();
   }
 
   playBtn.addEventListener("click", () => {
@@ -600,28 +605,43 @@
       setPlayingUI(false);
     }
   });
-  document.getElementById("nextTrack").addEventListener("click", nextTrack);
-  document.getElementById("prevTrack").addEventListener("click", prevTrack);
 
-  // Al terminar una canción pasa a la siguiente; al final de la lista vuelve a la primera
-  audio.addEventListener("ended", nextTrack);
+  document.getElementById("nextTrack").addEventListener("click", () => {
+    changeTrack(index + 1, !audio.paused);
+  });
+  document.getElementById("prevTrack").addEventListener("click", () => {
+    changeTrack(index - 1, !audio.paused);
+  });
+
+  // Al terminar una canción, la siguiente empieza sola (la lista vuelve al inicio al final)
+  audio.addEventListener("ended", () => changeTrack(index + 1, true));
+
+  // Si el archivo no existe o no se puede leer, lo mostramos en vez de quedarnos en silencio
+  audio.addEventListener("error", () => {
+    console.error("No se encontró el archivo:", audio.src);
+    labelEl.textContent = "Archivo no encontrado";
+    setPlayingUI(false);
+  });
+
   audio.addEventListener("pause", () => setPlayingUI(false));
-  audio.addEventListener("play", () => setPlayingUI(true));
+  audio.addEventListener("play", () => {
+    setPlayingUI(true);
+    labelEl.textContent = "Estás escuchando";
+  });
 
   // Arranque: intenta reproducir; si el navegador lo bloquea, arranca con la primera interacción
   setPlayingUI(false);
   loadTrack(0);
   play();
-  if (audio.paused) {
-    const events = ["click", "keydown", "touchstart", "scroll"];
-    const unlock = () => {
-      if (audio.paused) play();
-      events.forEach(evt => document.removeEventListener(evt, unlock));
-    };
-    events.forEach(evt =>
-      document.addEventListener(evt, unlock, { once: true, passive: true })
-    );
-  }
+
+  const unlockEvents = ["click", "keydown", "touchstart", "scroll"];
+  const unlock = () => {
+    if (audio.paused && audio.src) play();
+    unlockEvents.forEach(evt => document.removeEventListener(evt, unlock));
+  };
+  unlockEvents.forEach(evt =>
+    document.addEventListener(evt, unlock, { once: true, passive: true })
+  );
 </script>
 
 </body>
