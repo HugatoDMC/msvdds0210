@@ -308,16 +308,18 @@
     backdrop-filter: blur(6px);
   }
 
+  /* El disco gira sobre su propio centro */
   .disc {
+    display: block;
     flex: 0 0 52px;
     width: 52px;
     height: 52px;
     border-radius: 50%;
     object-fit: cover;
+    transform-origin: 50% 50%;
     animation: spin 3s linear infinite;
-    animation-play-state: paused;
   }
-  .disc.spinning { animation-play-state: running; }
+  .disc.paused { animation-play-state: paused; }
   @keyframes spin {
     from { transform: rotate(0deg); }
     to   { transform: rotate(360deg); }
@@ -559,8 +561,9 @@
   const playBtn = document.getElementById("playBtn");
   let index = 0;
 
+  // El disco siempre gira; solo se detiene cuando la música está en pausa
   function setPlayingUI(isPlaying) {
-    disc.classList.toggle("spinning", isPlaying);
+    disc.classList.toggle("paused", !isPlaying);
     playBtn.innerHTML = isPlaying ? "&#10074;&#10074;" : "&#9654;";
     playBtn.setAttribute("aria-label", isPlaying ? "Pausar" : "Reproducir");
   }
@@ -606,6 +609,7 @@
   audio.addEventListener("play", () => setPlayingUI(true));
 
   // Arranque: intenta reproducir; si el navegador lo bloquea, arranca con la primera interacción
+  setPlayingUI(false);
   loadTrack(0);
   play();
   if (audio.paused) {
