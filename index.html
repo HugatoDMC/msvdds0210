@@ -201,27 +201,33 @@
     transition: transform .15s ease, background .15s ease, border-color .15s ease, color .15s ease;
   }
   .btn:hover { transform: translateY(-2px); background: rgba(255,255,255,.07); }
-  .btn img, .btn svg { width: 20px; height: 20px; flex-shrink: 0; }
-  .btn-spotify:hover { border-color: var(--spotify); }
-  .btn-yt img { filter: brightness(0) invert(1); }
-  .btn-yt:hover { border-color: var(--youtube); }
-  .btn-guns svg { color: var(--guns); }
-  .btn-guns:hover { border-color: var(--guns); }
 
-  /* Discord: icono como máscara para que cambie a azul al pasar el cursor */
-  .icon-discord {
+  /* Iconos de marca como máscara: son blancos por defecto y toman el color del borde al pasar el cursor */
+  .icon {
     display: block;
     width: 20px;
     height: 20px;
     flex-shrink: 0;
-    background-color: currentColor;
-    -webkit-mask: url("https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/discord.svg") center / contain no-repeat;
-            mask: url("https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/discord.svg") center / contain no-repeat;
+    background-color: var(--white);
+    transition: background-color .15s ease;
+    -webkit-mask: var(--icon) center / contain no-repeat;
+            mask: var(--icon) center / contain no-repeat;
   }
-  .btn-discord:hover {
-    border-color: var(--discord);
-    color: var(--discord);
-  }
+  .icon-spotify { --icon: url("https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/spotify.svg"); }
+  .icon-youtube { --icon: url("https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/youtube.svg"); }
+  .icon-discord { --icon: url("https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/discord.svg"); }
+
+  .btn-spotify:hover { border-color: var(--spotify); color: var(--spotify); }
+  .btn-spotify:hover .icon-spotify { background-color: var(--spotify); }
+
+  .btn-yt:hover { border-color: var(--youtube); color: var(--youtube); }
+  .btn-yt:hover .icon-youtube { background-color: var(--youtube); }
+
+  .btn-discord:hover { border-color: var(--discord); color: var(--discord); }
+  .btn-discord:hover .icon-discord { background-color: var(--discord); }
+
+  .btn-guns svg { width: 20px; height: 20px; flex-shrink: 0; color: var(--guns); }
+  .btn-guns:hover { border-color: var(--guns); }
 
   .main { min-width: 0; padding-top: 24px; }
   .section-title {
@@ -421,17 +427,17 @@
         <p>Yea...</p>
 
         <a class="btn btn-spotify" href="https://open.spotify.com/artist/0okmlAaeb1l5d1gqOeTsSJ" target="_blank" rel="noopener">
-          <img src="https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/spotify.svg" alt="">
+          <span class="icon icon-spotify" aria-hidden="true"></span>
           Spotify
         </a>
 
         <a class="btn btn-yt" href="https://www.youtube.com/channel/UCCwK9XKbU0bPLVUey64PcEA" target="_blank" rel="noopener">
-          <img src="https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/youtube.svg" alt="">
+          <span class="icon icon-youtube" aria-hidden="true"></span>
           YouTube
         </a>
 
         <a class="btn btn-discord" href="https://discord.gg/0210" target="_blank" rel="noopener">
-          <span class="icon-discord" aria-hidden="true"></span>
+          <span class="icon icon-discord" aria-hidden="true"></span>
           Discord
         </a>
 
@@ -452,6 +458,10 @@
         <button class="arrow arrow-prev" id="prev" aria-label="Anterior">&lsaquo;</button>
 
         <div class="albums" id="albums">
+          <a class="album" href="https://open.spotify.com/album/3FxP0pK6dTsGjo1iE36wkd" target="_blank" rel="noopener">
+            <img src="assets/albums/Fish_Port.png" alt="Fish Port">
+            <span>Fish Port</span>
+          </a>
           <a class="album" href="https://open.spotify.com/album/1IcxMRPBx1lngkgSdPGpZj" target="_blank" rel="noopener">
             <img src="assets/albums/Eye_Fish_Portt.png" alt="Eye Fish">
             <span>Eye Fish</span>
@@ -561,7 +571,6 @@
   // ===== Playlist =====
   // Archivos en assets/music/ con nombres simples (sin espacios ni paréntesis)
   const PLAYLIST = [
-    { title: "Backseater.exe",       src: "assets/music/backseater.mp3" },
     { title: "Opening the Void",     src: "assets/music/opening-the-void.mp3" },
     { title: "Where Galaxies Ends",  src: "assets/music/where-galaxies-ends.mp3" },
     { title: "Bedroom",              src: "assets/music/bedroom.mp3" },
