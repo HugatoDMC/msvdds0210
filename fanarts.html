@@ -134,6 +134,13 @@
   .lightbox .close:hover { background: rgba(255,255,255,.14); }
 
   .empty { text-align: center; color: var(--muted); padding: 40px 0; }
+
+  /* ===== Créditos discretos ===== */
+  body { display: flex; flex-direction: column; }
+  .wrap { width: 100%; flex: 1; }
+  .credits { padding: 0 20px 20px; text-align: left; font-size: .72rem; letter-spacing: .04em; color: var(--muted); }
+  .credits a { color: var(--text); text-decoration: none; opacity: .75; font-weight: 600; letter-spacing: .08em; transition: opacity .15s ease; }
+  .credits a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
 </style>
 </head>
 <body>
@@ -156,6 +163,8 @@
 
   <section class="gallery" id="gallery" aria-label="Galería de fanarts"></section>
 </main>
+
+<footer class="credits">Página creada por <a href="https://discord.com/users/845486993155686406" target="_blank" rel="noopener">HUGATODMC</a></footer>
 
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Fanart ampliado">
   <button class="close" id="lbClose" aria-label="Cerrar">✕</button>
