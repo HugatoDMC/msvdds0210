@@ -229,6 +229,44 @@
   .btn-guns svg { width: 20px; height: 20px; flex-shrink: 0; color: var(--guns); }
   .btn-guns:hover { border-color: var(--guns); }
 
+
+  /* ===== Botones de navegación (debajo de la caja de bio) ===== */
+  .nav-links { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+  .nav-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: .95rem;
+    text-align: left;
+    transition: transform .15s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease;
+  }
+  .nav-btn svg { width: 20px; height: 20px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .nav-btn .label { flex: 1; }
+  .nav-btn .chev { width: 16px; height: 16px; opacity: .45; transition: transform .15s ease, opacity .15s ease; }
+  a.nav-btn:hover { transform: translateY(-2px); border-color: rgba(255,255,255,.6); background: rgba(255,255,255,.08); box-shadow: 0 8px 22px rgba(0,0,0,.45); }
+  a.nav-btn:hover .chev { transform: translateX(3px); opacity: .9; }
+  a.nav-btn:focus-visible { outline: 2px solid var(--white); outline-offset: 2px; }
+  .nav-btn.is-soon { cursor: not-allowed; color: var(--muted); background: rgba(255,255,255,.02); border-style: dashed; }
+  .badge-soon {
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    color: var(--white);
+    background: rgba(255,255,255,.08);
+  }
+
   .main { min-width: 0; padding-top: 24px; }
   .section-title {
     font-size: .8rem;
@@ -449,6 +487,20 @@
           Guns.lol
         </a>
       </div>
+
+      <nav class="nav-links" aria-label="Más secciones">
+        <div class="nav-btn is-soon" aria-disabled="true">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>
+          <span class="label">Proyectos Destacados</span>
+          <span class="badge-soon">Soon</span>
+        </div>
+
+        <a class="nav-btn" href="fanarts.html">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-1 .8-1.8 1.8-1.8H16a5 5 0 0 0 5-5c0-3.9-4-7.1-9-7.1z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10.5" cy="7.5" r="1"/><circle cx="15" cy="7.5" r="1"/></svg>
+          <span class="label">Fanarts</span>
+          <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </a>
+      </nav>
     </aside>
 
     <main class="main">
