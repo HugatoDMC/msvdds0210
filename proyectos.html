@@ -101,6 +101,13 @@
   .project .name { font-weight: 800; letter-spacing: .1em; font-size: 1.05rem; }
   .project .go { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; opacity: .5; transition: transform .15s ease, opacity .15s ease; }
   .project:hover .go { transform: translate(2px,-2px); opacity: .95; }
+
+  /* ===== Créditos discretos ===== */
+  body { display: flex; flex-direction: column; }
+  .wrap { width: 100%; flex: 1; }
+  .credits { padding: 0 20px 20px; text-align: left; font-size: .72rem; letter-spacing: .04em; color: var(--muted); }
+  .credits a { color: var(--text); text-decoration: none; opacity: .75; font-weight: 600; letter-spacing: .08em; transition: opacity .15s ease; }
+  .credits a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
 </style>
 </head>
 <body>
@@ -132,6 +139,8 @@
     </a>
   </section>
 </main>
+
+<footer class="credits">Página creada por <a href="https://discord.com/users/845486993155686406" target="_blank" rel="noopener">HUGATODMC</a></footer>
 
 </body>
 </html>
