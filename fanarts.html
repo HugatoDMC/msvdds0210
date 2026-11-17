@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fanarts · Miyo Music ♪</title>
+<style>
+  :root {
+    --bg: #0b0b10;
+    --panel: #15151d;
+    --border: rgba(255, 255, 255, .14);
+    --text: #f2f2f5;
+    --muted: #9a9aa8;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  html, body { background: var(--bg); }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ===== Barra superior con botón de volver ===== */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: rgba(11, 11, 16, .85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar-inner {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.04);
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: .9rem;
+    transition: transform .15s ease, border-color .15s ease, background .15s ease;
+  }
+  .back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .15s ease; }
+  .back:hover { transform: translateY(-2px); border-color: rgba(255,255,255,.6); background: rgba(255,255,255,.08); }
+  .back:hover svg { transform: translateX(-3px); }
+  .back:focus-visible { outline: 2px solid var(--white); outline-offset: 2px; }
+  .topbar .site { color: var(--muted); font-size: .85rem; letter-spacing: .12em; text-transform: uppercase; }
+
+  /* ===== Encabezado ===== */
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 40px 24px 64px; }
+  .head { text-align: center; margin-bottom: 36px; }
+  .head h1 {
+    margin: 0 0 8px;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: .08em;
+    background: linear-gradient(90deg, #6b6b75 0%, #ffffff 25%, #6b6b75 50%, #ffffff 75%, #6b6b75 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: chroma 4s linear infinite;
+  }
+  @keyframes chroma { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+  @media (prefers-reduced-motion: reduce) { .head h1 { animation: none; } }
+  .head p { margin: 0; color: var(--muted); }
+
+  /* ===== Galería ===== */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 22px;
+  }
+  .art {
+    margin: 0;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  }
+  .art:hover { transform: translateY(-4px); border-color: rgba(255,255,255,.45); box-shadow: 0 14px 30px rgba(0,0,0,.5); }
+  .art button {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: #0f0f15;
+    cursor: zoom-in;
+    aspect-ratio: 1 / 1;
+  }
+  .art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .art .ph {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: .8rem; letter-spacing: .14em; text-transform: uppercase;
+    background: repeating-linear-gradient(45deg, #12121a, #12121a 10px, #15151d 10px, #15151d 20px);
+  }
+  .art figcaption { padding: 12px 14px 14px; border-top: 1px solid var(--border); }
+  .art .title { font-weight: 600; font-size: .95rem; margin: 0 0 4px; }
+  .art .credit { font-size: .82rem; color: var(--muted); margin: 0; }
+  .art .credit a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); }
+  .art .credit a:hover { border-color: var(--white); }
+
+  /* ===== Visor ampliado ===== */
+  .lightbox {
+    position: fixed; inset: 0; z-index: 20;
+    display: none; align-items: center; justify-content: center; flex-direction: column; gap: 12px;
+    background: rgba(5,5,8,.92);
+    padding: 24px;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: 100%; max-height: 82vh; border-radius: 12px; border: 1px solid var(--border); }
+  .lightbox .cap { color: var(--muted); font-size: .9rem; text-align: center; }
+  .lightbox .cap b { color: var(--text); }
+  .lightbox .close {
+    position: absolute; top: 18px; right: 18px;
+    width: 40px; height: 40px; border-radius: 50%;
+    border: 1px solid var(--border); background: rgba(255,255,255,.06);
+    color: var(--text); font-size: 1.2rem; cursor: pointer;
+  }
+  .lightbox .close:hover { background: rgba(255,255,255,.14); }
+
+  .empty { text-align: center; color: var(--muted); padding: 40px 0; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="back" href="index.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      Volver
+    </a>
+    <span class="site">Miyo Music ♪</span>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="head">
+    <h1>Fanarts</h1>
+    <p>Arte hecho por la comunidad. Gracias por tanto cariño ♥</p>
+  </div>
+
+  <section class="gallery" id="gallery" aria-label="Galería de fanarts"></section>
+</main>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Fanart ampliado">
+  <button class="close" id="lbClose" aria-label="Cerrar">✕</button>
+  <img id="lbImg" alt="">
+  <div class="cap" id="lbCap"></div>
+</div>
+
+<script>
+  /* =====================================================
+     EDITA AQUÍ: agrega un bloque por cada fanart.
+     - src:    ruta de la imagen (ej. "assets/fanarts/arte1.png")
+     - title:  título opcional (déjalo "" si no quieres)
+     - artist: nombre del artista (obligatorio)
+     - link:   enlace al perfil del artista (opcional, déjalo "" si no hay)
+     ===================================================== */
+  const FANARTS = [
+    { src: "assets/fanarts/arte1.png", title: "", artist: "Artista 1", link: "" },
+    { src: "assets/fanarts/arte2.png", title: "", artist: "Artista 2", link: "" },
+    { src: "assets/fanarts/arte3.png", title: "", artist: "Artista 3", link: "" }
+  ];
+
+  const gallery = document.getElementById("gallery");
+  const lb = document.getElementById("lightbox");
+  const lbImg = document.getElementById("lbImg");
+  const lbCap = document.getElementById("lbCap");
+
+  function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text) e.textContent = text;
+    return e;
+  }
+
+  function openLightbox(a) {
+    lbImg.src = a.src;
+    lbImg.alt = "Fanart de " + a.artist;
+    lbCap.innerHTML = "";
+    const b = el("b", "", a.artist);
+    lbCap.append("Arte por ", b);
+    lb.classList.add("open");
+  }
+  function closeLightbox() { lb.classList.remove("open"); lbImg.src = ""; }
+  lb.addEventListener("click", e => { if (e.target !== lbImg) closeLightbox(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeLightbox(); });
+
+  if (!FANARTS.length) {
+    gallery.replaceWith(el("p", "empty", "Pronto habrá fanarts aquí."));
+  }
+
+  FANARTS.forEach(a => {
+    const fig = el("figure", "art");
+
+    const btn = el("button");
+    btn.type = "button";
+    btn.setAttribute("aria-label", "Ampliar fanart de " + a.artist);
+    const img = new Image();
+    img.src = a.src;
+    img.alt = "Fanart de " + a.artist;
+    img.loading = "lazy";
+    img.addEventListener("error", () => {
+      btn.replaceChildren(el("div", "ph", "Próximamente"));
+      btn.style.cursor = "default";
+      btn.onclick = null;
+    });
+    btn.appendChild(img);
+    btn.onclick = () => openLightbox(a);
+    fig.appendChild(btn);
+
+    const cap = el("figcaption");
+    if (a.title) cap.appendChild(el("p", "title", a.title));
+    const credit = el("p", "credit");
+    credit.append("Arte por ");
+    if (a.link) {
+      const l = el("a", "", a.artist);
+      l.href = a.link; l.target = "_blank"; l.rel = "noopener";
+      credit.appendChild(l);
+    } else {
+      credit.append(a.artist);
+    }
+    cap.appendChild(credit);
+    fig.appendChild(cap);
+
+    gallery.appendChild(fig);
+  });
+</script>
+</body>
+</html>
