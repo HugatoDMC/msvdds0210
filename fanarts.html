@@ -81,13 +81,10 @@
   .head p { margin: 0; color: var(--muted); }
 
   /* ===== Galería ===== */
-  .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 22px;
-  }
+  .gallery { column-width: 250px; column-gap: 22px; }
   .art {
-    margin: 0;
+    margin: 0 0 22px;
+    break-inside: avoid;
     background: var(--panel);
     border: 1px solid var(--border);
     border-radius: 18px;
@@ -102,11 +99,10 @@
     border: 0;
     background: #0f0f15;
     cursor: zoom-in;
-    aspect-ratio: 1 / 1;
   }
-  .art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .art img { width: 100%; height: auto; display: block; }
   .art .ph {
-    width: 100%; height: 100%;
+    width: 100%; aspect-ratio: 1 / 1;
     display: flex; align-items: center; justify-content: center;
     color: var(--muted); font-size: .8rem; letter-spacing: .14em; text-transform: uppercase;
     background: repeating-linear-gradient(45deg, #12121a, #12121a 10px, #15151d 10px, #15151d 20px);
@@ -116,6 +112,7 @@
   .art .credit { font-size: .82rem; color: var(--muted); margin: 0; }
   .art .credit a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); }
   .art .credit a:hover { border-color: var(--white); }
+  .art .note { font-size: .78rem; color: var(--white); margin: 8px 0 0; padding: 6px 10px; border-radius: 8px; background: rgba(255,255,255,.07); border: 1px solid var(--border); line-height: 1.35; }
 
   /* ===== Visor ampliado ===== */
   .lightbox {
@@ -173,11 +170,27 @@
      - title:  título opcional (déjalo "" si no quieres)
      - artist: nombre del artista (obligatorio)
      - link:   enlace al perfil del artista (opcional, déjalo "" si no hay)
+     - note:   texto extra opcional bajo el crédito (ej. rol del artista)
      ===================================================== */
   const FANARTS = [
-    { src: "assets/fanarts/arte1.png", title: "", artist: "Artista 1", link: "" },
-    { src: "assets/fanarts/arte2.png", title: "", artist: "Artista 2", link: "" },
-    { src: "assets/fanarts/arte3.png", title: "", artist: "Artista 3", link: "" }
+    { src: "assets/fanarts/nsito1.png", title: "", artist: "Nsito", link: "" },
+    { src: "assets/fanarts/nsito2.png", title: "", artist: "Nsito", link: "" },
+    { src: "assets/fanarts/nsito3.png", title: "", artist: "Nsito", link: "" },
+    { src: "assets/fanarts/nsito4.png", title: "", artist: "Nsito", link: "" },
+    { src: "assets/fanarts/nsito5.png", title: "", artist: "Nsito", link: "" },
+    { src: "assets/fanarts/nsito6.png", title: "", artist: "Nsito", link: "" },
+    { src: "assets/fanarts/dsfs.png", title: "", artist: "dsfs", link: "" },
+    { src: "assets/fanarts/Chirumiru1.png", title: "", artist: "Chirumiru", link: "" },
+    { src: "assets/fanarts/Chirumiru2.png", title: "", artist: "Chirumiru", link: "", note: "Creadora del diseño del PNGtuber de Miyo" },
+    { src: "assets/fanarts/Duckdream1.png", title: "", artist: "Duckdream", link: "" },
+    { src: "assets/fanarts/Duckdream2.png", title: "", artist: "Duckdream", link: "" },
+    { src: "assets/fanarts/Duckdream3.png", title: "", artist: "Duckdream", link: "" },
+    { src: "assets/fanarts/Duckdream4.png", title: "", artist: "Duckdream", link: "" },
+    { src: "assets/fanarts/night_auburn1.png", title: "", artist: "Night Auburn", link: "" },
+    { src: "assets/fanarts/night_auburn2.png", title: "", artist: "Night Auburn", link: "" },
+    { src: "assets/fanarts/night_auburn3.png", title: "", artist: "Night Auburn", link: "" },
+    { src: "assets/fanarts/halliex.png", title: "", artist: "Halliex", link: "" },
+    { src: "assets/fanarts/loquendero1.png", title: "", artist: "Loquendero", link: "" }
   ];
 
   const gallery = document.getElementById("gallery");
@@ -198,6 +211,7 @@
     lbCap.innerHTML = "";
     const b = el("b", "", a.artist);
     lbCap.append("Arte por ", b);
+    if (a.note) lbCap.append(" · " + a.note);
     lb.classList.add("open");
   }
   function closeLightbox() { lb.classList.remove("open"); lbImg.src = ""; }
@@ -239,6 +253,7 @@
       credit.append(a.artist);
     }
     cap.appendChild(credit);
+    if (a.note) cap.appendChild(el("p", "note", a.note));
     fig.appendChild(cap);
 
     gallery.appendChild(fig);
