@@ -616,6 +616,63 @@
     albumsEl.scrollBy({ left: STEP, behavior: "smooth" });
   });
 
+  // ===== Giro automático del carrusel (se detiene al tocarlo) =====
+  (function autoSpin() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const originals = Array.from(albumsEl.children);
+    const clones = originals.map(el => {
+      const c = el.cloneNode(true);
+      c.setAttribute("aria-hidden", "true");
+      c.tabIndex = -1;
+      albumsEl.appendChild(c);
+      return c;
+    });
+
+    const SPEED = 0.45;          // píxeles por frame (~27 px/s)
+    let pos = albumsEl.scrollLeft;
+    let running = true;
+    let rafId = 0;
+
+    function loopWidth() {
+      return clones[0].offsetLeft - originals[0].offsetLeft;
+    }
+
+    function tick() {
+      if (!running) return;
+      const loop = loopWidth();
+      if (loop > 0) {
+        pos += SPEED;
+        if (pos >= loop) pos -= loop;
+        albumsEl.scrollTo({ left: pos, behavior: "instant" });
+      }
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function stop() {
+      if (!running) return;
+      running = false;
+      cancelAnimationFrame(rafId);
+      // Quitar los clones sin que se note un salto
+      const loop = loopWidth();
+      const cur = albumsEl.scrollLeft;
+      clones.forEach(c => c.remove());
+      if (loop > 0) albumsEl.scrollTo({ left: cur % loop, behavior: "instant" });
+      ["pointerdown", "wheel", "touchstart", "keydown"].forEach(ev =>
+        albumsEl.removeEventListener(ev, stop));
+      document.getElementById("prev").removeEventListener("click", stop, true);
+      document.getElementById("next").removeEventListener("click", stop, true);
+    }
+
+    // Cualquier intento de mover el carrusel lo detiene para siempre
+    ["pointerdown", "wheel", "touchstart", "keydown"].forEach(ev =>
+      albumsEl.addEventListener(ev, stop, { passive: true }));
+    document.getElementById("prev").addEventListener("click", stop, true);
+    document.getElementById("next").addEventListener("click", stop, true);
+
+    rafId = requestAnimationFrame(tick);
+  })();
+
   // ===== Playlist =====
   // Archivos en assets/music/ con nombres simples (sin espacios ni paréntesis)
   const PLAYLIST = [
